@@ -1,5 +1,4 @@
 #include <M5Stack.h>
-#include "M5StackUpdater.h"
 #include "ScrollTextWindow.h"
 
 #define TOP_FIXED_HEIGHT        24  //上部の固定エリア高さ
@@ -49,11 +48,6 @@ void setup() {
   disableCore0WDT(); //コア0ウォッチドッグタイマー停止
   disableCore1WDT(); //コア1ウォッチドッグタイマー停止
   M5.begin();
-  if (digitalRead(BUTTON_A_PIN) == 0) { //M5StackUpdater用
-    Serial.println("Will Load menu binary");
-    updateFromFS(SD);
-    ESP.restart();
-  }
   M5.Lcd.fillScreen(TFT_BLACK);
 
   //固定エリアの描画
