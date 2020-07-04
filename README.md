@@ -1,4 +1,2 @@
 # M5_MIDI_Transceiver
-M5Stackで動作するBluetoothシリアル通信のレシーバープログラムです。標準でM5StackMIDIモジュールを使ってMIDIを受送信するようになっています。
-
-レシーバー側プログラムのみ公開。トランスミッター側は追加予定です
+M5Stackで動作するBluetoothシリアル通信のトランスミッターとレシーバーのプログラムです。M5StackMIDIモジュールを使ってMIDIを受送信するようになっています。binファイルはSD-Updater,LovyanLauncherに対応しています

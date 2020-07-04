@@ -40,8 +40,8 @@ void task0(void* param) { //タスク0 MIDI担当
   while (1) {
     if (Serial2.available()) {
       data = Serial2.read();
-      xQueueSend(xQueue, &data, 0);
       SerialBT.write(data);
+      xQueueSend(xQueue, &data, 0);
     }
   }
 }
@@ -64,7 +64,7 @@ void setup() {
   disableCore1WDT(); //コア1ウォッチドッグタイマー停止
   M5.begin();
   if (digitalRead(BUTTON_A_PIN) == 0) { //M5StackUpdater用
-    Serial.println("Will Load menu binary");
+    //Serial.println("Will Load menu binary");
     updateFromFS(SD);
     ESP.restart();
   }
@@ -87,12 +87,8 @@ void setup() {
 
   //スクロールクラスの初期化
   stw = new ScrollTextWindow(TOP_FIXED_HEIGHT, BOTTOM_FIXED_HEIGHT, TFT_BLACK, TEXE_WIDTH, TEXT_HEIGHT);
-  Serial.begin(115200);
   Serial2.begin(31250);
-  //SerialBT.setPin(pin);
   SerialBT.begin("MIDI_Transmitter", true);
-  //SerialBT.setPin(pin);
-  Serial.println("The device started in master mode, make sure remote BT device is on!");
 
   // connect(address) is fast (upto 10 secs max), connect(name) is slow (upto 30 secs max) as it needs
   // to resolve name to address first, but it allows to connect to different devices with the same name.
@@ -101,15 +97,12 @@ void setup() {
   //connected = SerialBT.connect(address);
 
   if (connected) {
-    Serial.println("Connected Succesfully!");
   } else {
     while (!SerialBT.connected(10000)) {
-      Serial.println("Failed to connect. Make sure remote device is available and in range, then restart app.");
     }
   }
   // disconnect() may take upto 10 secs max
   if (SerialBT.disconnect()) {
-    Serial.println("Disconnected Succesfully!");
   }
   // this would reconnect to the name(will use address, if resolved) or address used with connect(name/address).
   SerialBT.connect();
