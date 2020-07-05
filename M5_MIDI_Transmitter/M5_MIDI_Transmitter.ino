@@ -35,17 +35,6 @@ QueueHandle_t xQueue;
 uint8_t data ;
 int ret;
 
-void task0(void* param) { //タスク0 MIDI担当
-  while (1) {
-    if (Serial2.available()) {
-      data = Serial2.read();
-      SerialBT.write(data);
-      xQueueSend(xQueue, &data, 0);
-    }
-  }
-}
-
-
 void task1(void* param) { //タスク1 描画担当
   while (1) {
     delay(1); //速すぎると描画できないので
@@ -103,10 +92,12 @@ void setup() {
 
   xQueue = xQueueCreate( QUEUE_LENGTH, sizeof( uint8_t ) ); // キュー作成
 
-  xTaskCreatePinnedToCore(task0, "Task0", 8192, NULL, 1, NULL, 0); //コア0で関数task0をstackサイズ8192,優先順位1で起動
-  xTaskCreatePinnedToCore(task1, "Task1", 8192, NULL, 0, NULL, 1);  //コア1で関数task1をstackサイズ8192,優先順位0で起動
+  xTaskCreatePinnedToCore(task1, "Task1", 8192, NULL, 1, NULL, 1);  //コア1で関数task1をstackサイズ8192,優先順位0で起動
 }
 
 void loop() {
-  delay(1); //タスク1も動けるようにする用
+    if (Serial2.available()) {
+      SerialBT.write(data = Serial2.read());
+      xQueueSend(xQueue, &data, 0);
+    }
 }
