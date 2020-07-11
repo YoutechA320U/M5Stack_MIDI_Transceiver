@@ -71,6 +71,7 @@ void setup() {
   //スクロールクラスの初期化
   stw = new ScrollTextWindow(TOP_FIXED_HEIGHT, BOTTOM_FIXED_HEIGHT, TFT_BLACK, TEXE_WIDTH, TEXT_HEIGHT);
   Serial2.begin(31250);
+  Serial2.setRxBufferSize(100000);
   SerialBT.begin("MIDI_Transmitter", true);
 
   // connect(address) is fast (upto 10 secs max), connect(name) is slow (upto 30 secs max) as it needs
